@@ -150,4 +150,6 @@ v-for vue中循环的关键字
     (v,k,i) in student
     值,键,索引
 
+vue实例(对象)
+
 
