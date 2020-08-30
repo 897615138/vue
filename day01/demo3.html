@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+    {{getCurrentTime1()}}
+    <br>
+    {{getCurrentTime2}}
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    new Vue({
+        el:'#app',
+        data:{},
+        methods:{
+            getCurrentTime1:function () {
+                return new Date();
+            }
+        },
+        computed:{
+            //时间不会实时更新
+            getCurrentTime2:function () {
+                return new Date();
+            }
+        }
+    })
+</script>
+</body>
+</html>

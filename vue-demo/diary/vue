@@ -1,0 +1,106 @@
+vue 渐进式js框架,只注重视图层,结合HTML+CSS+JS,易用,有很好的生态系统,体积小,速度快,优化到位
+虚拟dom
+改变内容
+    插值表达式
+    函数调用
+    虚拟dom和diff算法 //TODO
+改变样式
+
+
+
+MVVM模式的实现 双向数据绑定
+视图与数据之间的连接
+
+cdn 内容分发网络 在全世界各地建立内容分发服务器 中心服务器
+引入工程内的 引入外部网络提供的js文件
+
+官方cdn
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+dom listeners 监听器 model
+dom bindings 绑定 view
+不允许数据和视图直接通信 viewModel是内置一个观察者observer
+观察者观察两个维度 观察视图变化 通知数据 观察数据变化 通知试图
+MVVM通过VM实现双向数据绑定
+
+AngularJS ReactJS 微信小程序
+
+移动有限 模块化 虚拟dom
+开源 社区活跃度高 生态环境好
+组件化 独立可交互区域
+
+html:(被vue绑定)
+插值表达式
+<div id="app">
+{{data}}
+</div>
+js:
+可以理解为json格式的对象,多个键值对
+el:id选择器选择一个元素
+data:数据
+<script>
+new Vue({
+el:'#app'
+});
+</script>
+
+插值表达式
+{{数组 [, , , ,][0]}}
+{{json对象}}
+{{方法名称()}}
+{{data名称}}
+不能写在html的标签中
+
+v-model 双向数据绑定
+v-on => @ 事件的绑定 @click @mouseover @keyup 扫一眼 HTML 模板便能轻松定位在 JavaScript 代码里对应的方法。因为你无须在 JavaScript 里手动绑定事件，你的 ViewModel 代码可以是非常纯粹的逻辑，和 DOM 完全解耦，更易于测试。当一个 ViewModel 被销毁时，所有的事件处理器都会自动被删除。你无须担心如何清理它们。
+v-bind =>: 属性的绑定
+v-once 该标签中的插值表达式只获取一次数据
+v-html
+v-text
+
+获取数据
+event.target.value
+this.
+
+事件 获取事件 v-on @
+事件的参数传递
+    设参 传参 接参
+事件修饰符
+    @事件类型
+<!-- 阻止单击事件继续传播 -->
+<a v-on:click.stop="doThis"></a>
+
+<!-- 提交事件不再重载页面 -->
+<form v-on:submit.prevent="onSubmit"></form>
+
+<!-- 修饰符可以串联 -->
+<a v-on:click.stop.prevent="doThat"></a>
+
+<!-- 添加事件监听器时使用事件捕获模式 -->
+<!-- 即内部元素触发的事件先在此处理，然后才交由内部元素进行处理 -->
+<div v-on:click.capture="doThis">...</div>
+
+<!-- 只当在 event.target 是当前元素自身时触发处理函数 -->
+<!-- 即事件不是从内部元素触发的 -->
+<div v-on:click.self="doThat">...</div>
+
+<!-- 点击事件将只会触发一次 -->
+<a v-on:click.once="doThis"></a>
+
+<!-- 滚动事件的默认行为 (即滚动行为) 将会立即触发 -->
+<!-- 而不会等待 `onScroll` 完成  -->
+<!-- 这其中包含 `event.preventDefault()` 的情况 -->
+<div v-on:scroll.passive="onScroll">...</div>
+
+不要把 .passive 和 .prevent 一起使用，因为 .prevent 将会被忽略，同时浏览器可能会向你展示一个警告。请记住，.passive 会告诉浏览器你不想阻止事件的默认行为。
+<!-- 即使 Alt 或 Shift 被一同按下时也会触发 -->
+<button v-on:click.ctrl="onClick">A</button>
+
+<!-- 有且只有 Ctrl 被按下的时候才触发 -->
+<button v-on:click.ctrl.exact="onCtrlClick">A</button>
+
+<!-- 没有任何系统修饰符被按下的时候才触发 -->
+<button v-on:click.exact="onClick">A</button>
+
+计算属性 computed 将计算的结果缓存 提高效率
+监控属性 watched newValue oldValue

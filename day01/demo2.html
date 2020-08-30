@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+    <button @click="addBtn">+</button>
+    <button @click="minusBtn">-</button>
+    <span v-model="count"></span>
+    {{count}}
+    <br>
+    {{result}}
+    <br>
+    <br>=============<br>
+    <p @mousemove="myMouse" v-model="x & y ">
+        坐标:
+        x:{{x}},
+        y:{{y}}
+        <span @mousemove="myMouseStop">停止坐标改变(函数)</span>
+        <span @mousemove.stop>停止坐标改变(事件修饰符)</span>
+    </p>
+    <br>=============<br>
+    <label>
+        <input type="text" @keyup.enter>
+    </label>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    new Vue({
+        el: "#app",
+        data: {
+            count: 0,
+            result:'',
+            x: 0,
+            y: 0
+        },
+        methods: {
+            addBtn: function () {
+                this.count++
+               this.judgeResult()
+            },
+            minusBtn: function () {
+                this.count--
+            },
+            //获取鼠标坐标
+            myMouse: function (event) {
+                this.x = event.offsetX;
+                this.y = event.offsetY;
+            },
+            myMouseStop: function (event) {
+                event.stopPropagation()
+            },
+            judgeResult:function () {
+                this.result=this.count>10?'大于10':''
+            }
+        }
+    });
+</script>
+</body>
+</html>
