@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+    <label>
+        <input type="text" v-model="title">
+        {{title}}
+    </label>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            title: ''
+        },
+        watch: {
+            title:function (newValue,oldValue) {
+                console.log("title changed")
+                console.log('newValue:'+newValue)
+                console.log('oldValue:'+oldValue)
+            }
+        }
+    });
+</script>
+</body>
+</html>

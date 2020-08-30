@@ -5,8 +5,14 @@ vue 渐进式js框架,只注重视图层,结合HTML+CSS+JS,易用,有很好的�
     函数调用
     虚拟dom和diff算法 //TODO
 改变样式
-
-
+    内部引用:
+    给html元素的class属性绑定vue中的属性值 样式的动态绑定
+    computed 返回多个键值对
+    双向绑定 改变vue中的属性
+    多个数组表示
+    内嵌引入:
+    style设置
+    computed
 
 MVVM模式的实现 双向数据绑定
 视图与数据之间的连接
@@ -104,3 +110,44 @@ this.
 
 计算属性 computed 将计算的结果缓存 提高效率
 监控属性 watched newValue oldValue
+
+样式的动态绑定
+ <div v-bind:class="{red:temp}" class="myDiv"  @click="changeColor"></div>
+ data:{
+             temp:false
+         }
+ 给html元素的class属性绑定vue中的属性值 样式的动态绑定
+     computed 返回多个键值对
+     双向绑定 改变vue中的属性
+     多个组合用数组:class="[...,...]"
+
+json对象的键不能有-
+
+普通的js操作
+将HTML转变为dom树
+找到元素
+修改DOM树上的节点
+
+Vue核心 高效
+虚拟dom和diff算法
+直接修改虚拟DOM
+diff算法计算出区别,只修改区别
+
+分支语句
+v-if
+v-else
+v-else-if
+
+v-show display 效率更高
+
+template
+    配合v-if 多个元素一起出现或消失 v-show无响应
+
+循环语句
+v-for vue中循环的关键字
+    (a,i) in args :key='i'
+    值,键
+    (v,k,i) in student
+    值,键,索引
+
+

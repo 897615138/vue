@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+    <ul>
+        <li v-for="(a,i) in args " :key="i">{{i + 1}}.{{a}}</li>
+    </ul>
+    <!--    <ul>-->
+    <!--        <li v-for="(v,k,i) in student">{{v}}&#45;&#45;{{k}}&#45;&#45;{{i}}</li>-->
+    <!--    </ul>-->
+    <!--    <ul>-->
+    <!--        <li v-for="(v,i) in student">{{v}}&#45;&#45;{{k}}&#45;&#45;{{i}}</li>-->
+    <!--    </ul>-->
+    <table>
+        <tr>
+            <td>序号</td>
+            <td>姓名</td>
+            <td>年龄</td>
+            <td>联系方式</td>
+        </tr>
+        <tr v-for="(stu,i) in student">
+            <td>{{i+1}}</td>
+            <td v-for="value in stu">{{value}}</td>
+        </tr>
+    </table>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    new Vue({
+        el: "#app",
+        data: {
+            args: [1, 2, 3, 4, 5],
+            student: [
+                {
+                    name: '小一',
+                    age: 12,
+                    tel: '18888888888'
+                },
+                {
+                    name: '小二',
+                    age: 12,
+                    tel: '18888888888'
+                },
+                {
+                    name: '小三',
+                    age: 12,
+                    tel: '18888888888'
+                },
+            ]
+        }
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .myDiv {
+            width: 400px;
+            height: 200px;
+            background: #42b983;
+        }
+        .red{
+            background: firebrick;
+        }
+        .yellow{
+            background: khaki;
+        }
+        .green{
+            background: aquamarine;
+        }
+        .myWidth{
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div :class="{red:temp}" class="myDiv"  @click="changeColor"></div>
+    <div :class="myClassStyle" class="myDiv" @click="changeColor"></div>
+    <div :class="[myColor,myW]"  class="myDiv" @click="changeColor"></div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    new Vue({
+        el: "#app",
+        data:{
+            temp:false,
+            myColor:'green',
+            myW: 'myWidth',
+            bc:"green",
+            myHeight:300
+        },
+        methods:{
+            changeColor:function () {
+                this.temp=!this.temp;
+                this.myColor='yellow'
+            }
+        },
+        computed:{
+            myClassStyle:function(){
+                return{
+                    yellow:this.temp,
+                    myWidth:this.temp
+                }
+            }
+        }
+    })
+</script>
+</body>
+</html>
