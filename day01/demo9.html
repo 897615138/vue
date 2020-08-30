@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+    {{title}}
+   <button type="button" @click="showVueObject()" ref="myBtn"></button>
+    <button type="button" @click="changeT()"></button>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    const v1=new Vue({
+        el: "#app",
+        data: {
+            title:'hello'
+        },
+        methods:{
+            showVueObject:function () {
+                //实例属性
+                console.log(v1)
+                this.$refs["myBtn"].innerHTML='啦啦啦'
+            },
+            changeT:function () {
+                v2.$mount("#app")
+            }
+        },
+    })
+    const v2=new Vue({
+        template:"<h1>hello</h1>"
+    })
+
+
+</script>
+</body>
+</html>

@@ -151,5 +151,21 @@ v-for vue中循环的关键字
     值,键,索引
 
 vue实例(对象)
+实例属性 .$
+ref 相当于id ref=
+this.$refs[" "]
+vue动态绑定 mount 页面的元素和vue对象
+v2.$mount("#app")
 
+vue组件
+注册
+    全局注册 Vue.component("组件名",{vue对象})
+        在被vue绑定了的html元素中才能使用组件
+        vue对象实例属性有所区别,必须套根元素<div></div>
+        data:function(){
+        return{
+        键值对: ,}
+        }
+    本地注册
 
+生命周期
