@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    new Vue({
+        el:"#app",
+        beforeCreate(){console.log('beforeCreate')},
+        created(){console.log('created')},
+        beforeMount(){console.log('beforeMount')},
+        mounted(){console.log('mounted')},
+        beforeUpdate(){console.log('beforeUpdate')},
+        updated(){console.log('updated')},
+        beforeDestroy(){console.log('beforeDestroy')},
+        destroyed(){console.log('destroyed')},
+        activated(){console.log('activated')},
+        deactivated(){console.log('deactivated')},
+        errorCaptured(){console.log('errorCaptured')}
+
+    })
+</script>
+</body>
+</html>
