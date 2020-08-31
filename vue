@@ -277,3 +277,25 @@ errorCaptured
 如果此 errorCaptured 钩子自身抛出了一个错误，则这个新错误和原本被捕获的错误都会发送给全局的 config.errorHandler。
 一个 errorCaptured 钩子能够返回 false 以阻止错误继续向上传播。本质上是说“这个错误已经被搞定了且应该被忽略”。它会阻止其它任何会被这个错误唤起的 errorCaptured 钩子和全局的 config.errorHandler。
 
+vue cli脚手架
+node.js js在服务端 node -v npm install vue-cli -g 全局安装
+mkdir vue-pay
+cd vue-pay
+vue list  列出官方提供的骨架
+vue init webpack vue-pay
+
+项目结构 
+index.html 无论有多复杂 都是那么多行
+main.js 导入App.vue组件 绑定vue
+App.vue 以.vue为扩展名的内容(文件)实际上就是一个Vue对象 
+    Vue插件
+Vue文件的组成部分
+全局注册 
+本地注册 
+各组件的参数传递
+父传子 :title="msg" props
+子传父 @           $emit
+
+vue发送ajax请求
+vue是视图层框架 不需要ajax的通信功能 防止污染
+npm install --save axios vue-axios
