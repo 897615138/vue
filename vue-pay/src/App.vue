@@ -1,16 +1,21 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png" alt="">
     <my-header></my-header>
+    <img src="./assets/logo.png" alt="">
     <my-content :title="msg" :btnFn="FCfn" @newMsg="msg=$event"></my-content>
+    <register></register>
     <my-bottom></my-bottom>
     <router-view/>
   </div>
 </template>
 
 <script>
+
+
+import Register from "./components/Register";
 export default {
   name: 'App',
+  components: {Register},
   data(){
     return{
       msg:"hello"
@@ -22,6 +27,8 @@ export default {
     }
   }
 }
+
+
 </script>
 
 <style>

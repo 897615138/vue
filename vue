@@ -299,3 +299,7 @@ Vue文件的组成部分
 vue发送ajax请求
 vue是视图层框架 不需要ajax的通信功能 防止污染
 npm install --save axios vue-axios
+npm install vue bootstrap-vue bootstrap
+npm i element-ui -S
+npm install babel-plugin-component -D
+npm install axios --save-dev
