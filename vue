@@ -269,11 +269,11 @@ deactivated
 errorCaptured
 2.5.0+ 新增
 类型：(err: Error, vm: Component, info: string) => ?boolean
-当捕获一个来自子孙组件的错误时被调用。此钩子会收到三个参数：错误对象、发生错误的组件实例以及一个包含错误来源信息的字符串。此钩子可以返回 false 以阻止该错误继续向上传播。
+当捕获一个来自子孙组件的错误时被调用。此钩子会收到三个参数：错误对象、发生错误组件实例以及一个包含错误来源信息的字符串。此钩子可以返回 false 以阻止该错误继续向上传播。
 你可以在此钩子中修改组件的状态。因此在捕获错误时，在模板或渲染函数中有一个条件判断来绕过其它内容就很重要；不然该组件可能会进入一个无限的渲染循环。
 错误传播规则
-默认情况下，如果全局的 config.errorHandler 被定义，所有的错误仍会发送它，因此这些错误仍然会向单一的分析服务的地方进行汇报。
-如果一个组件的继承或父级从属链路中存在多个 errorCaptured 钩子，则它们将会被相同的错误逐个唤起。
+默认情况下，如果全局的 config.errorHandler 被定义，所有的错误仍会发送它，因此这些错误仍然会向单一分析服务的地方进行汇报。
+如果一个组件的继承或父级从属链路中存在多个 errorCaptured 钩子，则它们将会被相同错误逐个唤起。
 如果此 errorCaptured 钩子自身抛出了一个错误，则这个新错误和原本被捕获的错误都会发送给全局的 config.errorHandler。
 一个 errorCaptured 钩子能够返回 false 以阻止错误继续向上传播。本质上是说“这个错误已经被搞定了且应该被忽略”。它会阻止其它任何会被这个错误唤起的 errorCaptured 钩子和全局的 config.errorHandler。
 
@@ -303,3 +303,58 @@ npm install vue bootstrap-vue bootstrap
 npm i element-ui -S
 npm install babel-plugin-component -D
 npm install axios --save-dev
+
+跨域问题
+浏览器进行ajax请求 浏览器对js的安全限制 
+同源策略 域名 协议 端口 完全相同
+    CORS 跨资源共享 W3C标准 发出AJAX请求 
+        配置spring-mvc.xml
+    JSONP
+    Nginx反向代理
+
+路由 
+在数据通信时,选择通信的路线->在vue中的路由实现其他组件的相互切换
+交换机通过路由 交换机只能在同一个网段内
+路由模块 路由视图 路由跳转 
+1. 路由模块与依赖的安装
+npm install vue-router -s
+npm install
+2. 设计路由界面npm
+3. 创建静态路由表
+    /src/router.js
+4. 在main.js中使用路由模块以及注册路由表
+        把router实例放入vue实例中
+5. 创建路由链接和路由视图 
+
+路由之间的参数传递
+设参 通过路由表 /:id 设置的参数 
+    起始vue
+    <router-link to="路径/id"></router-link>
+传参
+
+接参
+    $route.params.mid
+    在目标vue中
+    data(){
+        return {
+        id: this.$route.params.id
+        }
+    }
+    
+路由之间的跳转 
+    1.<router-link to="路径"></router-link>
+    2.标签里面写 :index="路径"
+    3.js this.$router.push("路径")
+   
+vue中组件样式表的作用范围
+    当 <style> 标签有 scoped 属性时，它的 CSS 只作用于当前组件中的元素。
+   
+资源的打包
+
+开发一个vue项目标准的步骤 
+    1)vue-cli拉取项目骨架
+    2)安装依赖
+    3)npm run dev 开发者模式 各种修改都有实时效果 由vue-cli进行打包发布
+    4)开发结束后 手动部署在自己的服务器上npm run build
+                        .dist/build.js
+

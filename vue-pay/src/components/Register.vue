@@ -7,7 +7,7 @@
             <h3>注册</h3>
             <hr>
             <el-form-item prop="userName" label="用户名">
-              <el-input v-model="user.userName" placeholder="请输入用户名"></el-input>
+              <el-input v-model="user.userName" placeholder="请输入用户名" @change="checkUserName"></el-input>
             </el-form-item>
             <el-form-item prop="userName" label="昵称">
               <el-input v-model="user.userNickname" placeholder="请输入昵称"></el-input>
@@ -18,11 +18,40 @@
             <el-form-item prop="userPhone" label="手机号">
               <el-input v-model="user.userPhone" placeholder="请输入手机号"></el-input>
             </el-form-item>
+            <el-form-item prop="userSex" label="性别">
+              <el-radio-group v-model="user.userSex">
+                <el-radio label=0>保密</el-radio>
+                <el-radio label=1>男</el-radio>
+                <el-radio label=2>女</el-radio>
+              </el-radio-group>
+            </el-form-item>
             <el-form-item prop="userPassword" label="设置密码">
               <el-input v-model="user.userPassword" show-userPassword placeholder="请输入密码"></el-input>
             </el-form-item>
+            <el-form-item prop="userPassword" label="重复密码">
+              <el-input v-model="user.userPasswordTwice" show-userPassword placeholder="请重复输入密码"></el-input>
+            </el-form-item>
+<!--            TODO 上传头像-->
+<!--            <el-form-item label="上传头像" ref="uploadElement" prop="userAvatar">-->
+<!--              <el-input v-model="user.userAvatar" v-if="false"></el-input>-->
+<!--              <el-upload-->
+<!--                ref="upload"-->
+<!--                :auto-upload="false"-->
+<!--                :before-upload="beforeUpload2"-->
+<!--                :data="user"-->
+<!--                :file-list="fileList"-->
+<!--                :limit="1"-->
+<!--                :on-change="handleChange"-->
+<!--                :on-success="handleAvatarSuccess"-->
+<!--                accept="image/jpeg,image/jpg,image/png"-->
+<!--                action="#"-->
+<!--                class="upload-demo"-->
+<!--                multiple>-->
+<!--                <el-button type="success" size="small">选择文件</el-button>-->
+<!--              </el-upload>-->
+<!--            </el-form-item>-->
             <el-form-item>
-              <el-button type="primary"  @click="doRegister()">注册账号</el-button>
+              <el-button type="primary" @click="doRegister()">注册账号</el-button>
             </el-form-item>
           </el-form>
         </el-row>
@@ -33,20 +62,38 @@
 
 <script>
 import axios from "axios";
+
 export default {
-  name: "login",
+  name: "Register",
   data() {
     return {
       user: {
         userName: "",
-        userNickname:"",
+        userNickname: "",
         userEmail: "",
-        userPhone:"",
-        userPassword: ""
+        userPhone: "",
+        userPassword: "",
+        userPasswordTwice: "",
+        userSex: 0,
+        userAvatar:""
       },
+      fileList:[],
+      imageUrl: '',
+      fd: '', //向服务器进行传递的参数（带有图片formdata）
+      updateUrl: this.serverUrl + '/userInfo/update',
+      serverUrl: ''
     };
   },
   methods: {
+    checkUserName(){
+      console.log("检验用户名")
+      const params = new URLSearchParams();
+      params.append('userName', this.user.userName)
+      axios.post('http://localhost:8888/checkUserName', params).then(function (resp) {
+        console.log(resp.data)
+
+      })
+    },
     doRegister() {
       if (!this.user.userName) {
         this.$message.error("请输入用户名！");
@@ -59,27 +106,90 @@ export default {
             this.$message.error("请输入有效的邮箱！");
           } else if (!this.user.userPassword) {
             this.$message.error("请输入密码！");
+          } else if (!(this.user.userPassword === this.user.userPasswordTwice)) {
+            this.$message.error("两次密码输入不同!！");
           } else {
             console.log("注册")
-            axios.post("http://localhost:8888/register/", {
-                userName: this.user.userName,
-                userNickname: this.user.userNickname,
-                userEmail: this.user.userEmail,
-                userPhone: this.user.userPhone,
-                userPassword: this.user.userPassword
-              })
-              .then(res => {
-
-              });
+            const params = new URLSearchParams();
+            params.append('userName', this.user.userName)
+            params.append('userNickname', this.user.userNickname)
+            params.append('userEmail', this.user.userEmail)
+            params.append('userPhone', this.user.userPhone)
+            params.append('userPassword', this.user.userPassword)
+            params.append('userSex', this.user.userSex)
+            axios.post('http://localhost:8888/register', params).then(function (resp) {
+               console.log(resp.data)
+            })
+            // .then(res => {
+            //
+            // });
           }
         }
       }
-    }
+    },
+    // handleChange (file, fileList) {
+    //   //注意这个file.raw,踩坑,你可以直接传file试试
+    //   this.getBase64(file.raw).then(res => {
+    //     //这个goods是我的商品信息，在data定义了
+    //     this.user.userAvatar =res
+    //   });
+    // },
+    // // 将file转base64
+    // getBase64(file) {
+    //   return new Promise(function(resolve, reject) {
+    //     let reader = new FileReader();
+    //     let imgResult = "";
+    //     reader.readAsDataURL(file);
+    //     reader.onload = function() {
+    //       imgResult = reader.result;
+    //     };
+    //     reader.onerror = function(error) {
+    //       reject(error);
+    //     };
+    //     reader.onloadend = function() {
+    //       resolve(imgResult);
+    //     };
+    //   });
+    // },
+    // handleRemove() {
+    //   this.files = []
+    //   this.imageUrl = ''
+    // },
+    // // 上传成功回调
+    // handleAvatarSuccess(res, file) {
+    //   this.imageUrl = res.data.url
+    //   this.files.push(file)
+    // },
+    // // 上传前格式和图片大小限制
+    // beforeAvatarUpload(file) {
+    //   const type = file.type === 'image/jpeg' || 'image/jpg' || 'image/webp' || 'image/png'
+    //   const isLt2M = file.size / 1024 / 1024 < 2
+    //   if (!type) {
+    //     this.$message.error('图片格式不正确!(只能包含jpg，png，webp，JPEG)')
+    //   }
+    //   if (!isLt2M) {
+    //     this.$message.error('上传图片大小不能超过 2MB!')
+    //   }
+    //   return type && isLt2M
+    // }
   }
 };
 
 </script>
 
 <style scoped>
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
 
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
 </style>

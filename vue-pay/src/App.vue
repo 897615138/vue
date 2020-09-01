@@ -1,11 +1,12 @@
 <template>
   <div id="app">
     <my-header></my-header>
-    <img src="./assets/logo.png" alt="">
-    <my-content :title="msg" :btnFn="FCfn" @newMsg="msg=$event"></my-content>
-    <register></register>
-    <my-bottom></my-bottom>
+<!--    <img src="./assets/logo.png" alt="">-->
+<!--&lt;!&ndash;    <my-content :title="msg" :btnFn="FCfn" @newMsg="msg=$event"></my-content>&ndash;&gt;-->
+<!--    <register></register>-->
     <router-view/>
+    <my-bottom></my-bottom>
+
   </div>
 </template>
 
