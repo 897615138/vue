@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 import Index from "../components/Index";
 import Register from "../components/Register";
 import Login from "../components/Login";
+import Manager from "../components/Manager";
 
 export let routes;
 
@@ -29,6 +30,10 @@ export default new Router({
     {
       path: '/login',
       component: Login
+    },
+    {
+      path: '/manager',
+      component: Manager
     }
   ]
 })

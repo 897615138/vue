@@ -9,7 +9,7 @@
             <el-form-item prop="userName" label="用户名">
               <el-input v-model="user.userName" placeholder="请输入用户名"></el-input>
             </el-form-item>
-            <el-form-item prop="userName" label="昵称">
+            <el-form-item prop="userNickname" label="昵称">
               <el-input v-model="user.userNickname" placeholder="请输入昵称"></el-input>
             </el-form-item>
             <el-form-item prop="userEmail" label="邮箱">
@@ -166,6 +166,7 @@ export default {
   methods: {
     //注册 提交表单
     doRegister() {
+      const that=this
       this.$refs["registerForm"].validate((valid) => {
         if (valid) {
             console.log("注册")
@@ -178,10 +179,22 @@ export default {
             params.append('userSex', this.user.userSex)
             axios.post('http://localhost:8888/register', params).then(function (resp) {
               console.log(resp.data)
+              that.$refs["registerForm"].resetFields()
+              that.$refs["registerForm"].clearValidate()
+              that.successReg()
+              that.$router.push("/login")
             })
           }
         })
-      }
+      },
+    successReg() {
+      const h = this.$createElement;
+      this.$notify({
+        title: '恭喜',
+        message: '注册成功',
+        type: 'success'
+      });
+    }
     }
 };
 

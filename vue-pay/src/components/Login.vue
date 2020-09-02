@@ -7,7 +7,7 @@
             <h3>登录</h3>
             <hr>
             <el-form-item  label="登录方式" >
-                <el-select v-model="value" placeholder="请选择" @change="showType" ref="loginMethod">
+                <el-select v-model="value" placeholder="请选择"  ref="loginMethod">
                 <el-option
                   v-for="item in options"
                   :key="item.value"
@@ -36,7 +36,6 @@
 
 <script>
 import axios from "axios";
-
 export default {
   name: "Login",
   data() {
@@ -150,6 +149,8 @@ export default {
   methods: {
     //登录 提交表单
     doLogin() {
+      const that=this
+      console.log(this.$refs["loginForm"])
       this.$refs["loginForm"].validate((valid) => {
         if (valid) {
           console.log("登录")
@@ -162,21 +163,32 @@ export default {
           params.append('userPassword', this.user.userPassword)
           axios.post('http://localhost:8888/login', params).then(function (resp) {
             console.log(resp.data)
+            that.$refs["loginForm"].resetFields()
+            that.$refs["loginForm"].clearValidate()
+            that.successLogin()
+            that.$router.push("/index")
           })
         }
       })
     },
-    showType(){
-      console.log(this.type)
-      console.log(this.value)
-      console.log( this.$refs.loginMethod)
-      const obj = this.options.find((item)=>{//这里的userList就是上面遍历的数据源
-        return item.label === this.value;//筛选出匹配数据
-      })
-      console.log(obj)
-      console.log(obj.value)
-
+    successLogin() {
+      const h = this.$createElement;
+      this.$notify({
+        title: '欢迎',
+        message: '登录成功',
+        type: 'success'
+      });
     }
+    // showType(){
+    //   console.log(this.type)
+    //   console.log(this.value)
+    //   console.log( this.$refs.loginMethod)
+    //   const obj = this.options.find((item)=>{//这里的userList就是上面遍历的数据源
+    //     return item.label === this.value;//筛选出匹配数据
+    //   })
+    //   console.log(obj)
+    //   console.log(obj.value)
+    // }
 
   }
 };
