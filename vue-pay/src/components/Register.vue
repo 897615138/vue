@@ -64,7 +64,6 @@ export default {
         userSex: 0,
         userAvatar: ""
       },
-      flag: false,
       rules: {
         userName: [
           {required: true, message: '请输入用户名', trigger: 'blur'},

@@ -3,18 +3,51 @@
     <div class="login clearfix">
       <div class="login-wrap">
         <el-row type="flex" justify="center">
-          <el-form ref="loginForm" :model="user" status-icon label-width="80px">
+          <el-form ref="loginForm" :model="user" status-icon label-width="80px" :rules="rules">
             <h3>登录</h3>
             <hr>
-            <el-form-item prop="userName" label="用户名/邮箱/手机号" label-width=“600px”>
-              <el-input v-model="user.userName" placeholder="请输入用户名/邮箱/手机号"
-              style="width:300px"></el-input>
+            <el-form-item  >
+              <el-select v-model="value" placeholder="请选择">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+
+              </el-select>
             </el-form-item>
-            <el-form-item prop="userPassword" label="密码"  label-width=“600px”>
+
+            <el-form-item prop="userName" label="用户名">
+              <el-input v-model="user.userName" placeholder="请输入用户名"></el-input>
+            </el-form-item>
+            <el-form-item prop="userName" label="昵称">
+              <el-input v-model="user.userNickname" placeholder="请输入昵称"></el-input>
+            </el-form-item>
+            <el-form-item prop="userEmail" label="邮箱">
+              <el-input v-model="user.userEmail" placeholder="请输入邮箱"></el-input>
+            </el-form-item>
+            <el-form-item prop="userPhone" label="手机号">
+              <el-input v-model="user.userPhone" placeholder="请输入手机号"></el-input>
+            </el-form-item>
+            <el-form-item prop="userSex" label="性别">
+              <el-radio-group v-model="user.userSex">
+                <el-radio label=0>保密</el-radio>
+                <el-radio label=1>男</el-radio>
+                <el-radio label=2>女</el-radio>
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item prop="userPassword" label="设置密码">
               <el-input v-model="user.userPassword" show-userPassword placeholder="请输入密码"></el-input>
             </el-form-item>
+            <el-form-item label="密码强度">
+              <password-strength v-model="user.userPassword" style="padding-top: 10px;"></password-strength>
+            </el-form-item>
+            <el-form-item prop="userPasswordTwice" label="重复密码">
+              <el-input v-model="user.userPasswordTwice" show-userPassword placeholder="请重复输入密码"></el-input>
+            </el-form-item>
             <el-form-item>
-              <el-button type="primary"  @click="dologin()">登录账号</el-button>
+              <el-button type="primary" @click="doLogin()">登录账号</el-button>
             </el-form-item>
           </el-form>
         </el-row>
@@ -25,21 +58,128 @@
 
 <script>
 import axios from "axios";
+import PasswordStrength from "./PasswordStrength";
+
 export default {
-  name: "login",
+  name: "Login",
+  components:{PasswordStrength},
   data() {
+
     return {
       user: {
         userName: "",
-        userNickname:"",
         userEmail: "",
-        userPhone:"",
-        userPassword: ""
+        userPhone: "",
+        userPassword: "",
       },
-    };
+      options: [{
+        value: 'userName',
+        label: '用户名'
+      }, {
+        value: 'userEmail',
+        label: '邮箱'
+      }, {
+        value: 'userPhone',
+        label: '手机号'
+      }],
+      rules: {
+        userName: [
+          {required: true, message: '请输入用户名', trigger: 'blur'},
+          {min: 1, max: 18, message: '长度在 1 到 18 个字符', trigger: 'blur'},
+          {
+            validator: (rule, value, callback) => {
+              checkUserName(rule, value, callback)
+            },
+            trigger: ['blur']
+          }
+        ],
+        userEmail: [
+          {required: true, message: '请输入邮箱', trigger: 'blur'},
+          {
+            pattern: /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/,
+            message: '请输入有效的邮箱'
+          },
+          {
+            validator: (rule, value, callback) => {
+              checkMail(rule, value, callback)
+            },
+            trigger: ['blur']
+          },
+        ],
+        userPhone: [
+          {required: true, message: '请输入手机号', trigger: 'blur'},
+          {
+            pattern: /^1[34578]\d{9}$/,
+            message: '请输入有效的手机号'
+          },
+          {
+            validator: (rule, value, callback) => {
+              checkPhone(rule, value, callback)
+            },
+            trigger: ['change']
+          }
+        ],
+        userPassword: [
+          {required: true, message: '请输入密码', trigger: 'blur'},
+        ],
+        userPasswordTwice: [
+          {required: true, message: '请重复输入密码', trigger: 'blur'},
+        ],
+        userSex: [
+          {required: true, message: '选择性别', trigger: 'blur'}
+        ]
+      }
+    }
+
+    function checkUserName(rule, value, callback) {
+      const params = new URLSearchParams();
+      params.append('userName', value)
+      axios.post('http://localhost:8888/checkUserName', params).then(function (resp) {
+        // console.log(resp.data.flag)
+
+        if (!resp.data.flag) {
+          //用户名不可用
+          callback(new Error(resp.data.message))
+        } else {
+          //用户名可用
+          callback();
+        }
+      })
+    }
+
+    //TODO 邮箱验证
+    function checkMail(rule, value, callback) {
+      const params = new URLSearchParams();
+      params.append('userEmail', value)
+      axios.post('http://localhost:8888/checkMail', params).then(function (resp) {
+        if (!resp.data.flag) {
+          //邮箱不可用
+          callback(new Error(resp.data.message))
+        } else {
+          //邮箱可用
+          callback();
+        }
+      })
+    }
+
+    //TODO 手机号验证
+    function checkPhone(rule, value, callback) {
+      const params = new URLSearchParams();
+      params.append('userPhone', value)
+      axios.post('http://localhost:8888/checkPhone', params).then(function (resp) {
+        if (!resp.data.flag) {
+          //手机号不可用
+          callback(new Error(resp.data.message))
+        } else {
+          //手机号可用
+          callback();
+        }
+      })
+    }
   },
   methods: {
-    dologin() {
+    //登录 提交表单
+    doLogin() {
       if (!this.user.userName) {
         this.$message.error("请输入用户名！");
       } else if (!this.user.userEmail) {
@@ -51,32 +191,25 @@ export default {
             this.$message.error("请输入有效的邮箱！");
           } else if (!this.user.userPassword) {
             this.$message.error("请输入密码！");
+          } else if (!(this.user.userPassword === this.user.userPasswordTwice)) {
+            this.$message.error("两次密码输入不同!！");
           } else {
-            console.log("登录1")
-            // axios.post("http://localhost:8888/login", {
-            //   userName: this.user.userName,
-            //   userNickName: this.user.userNickname,
-            //   userEmail: this.user.userEmail,
-            //   userPhone: this.user.userPhone,
-            //   userPassword: this.user.userPassword
-            //   })
-            const _this = this
+            console.log("登录")
             const params = new URLSearchParams();
             params.append('userName', this.user.userName)
-            params.append('userNickName', this.user.userNickname)
+            params.append('userNickname', this.user.userNickname)
             params.append('userEmail', this.user.userEmail)
-            params.append('userPhone', this.userPhone)
+            params.append('userPhone', this.user.userPhone)
             params.append('userPassword', this.user.userPassword)
-            axios.post('http://localhost:8888/login',params).then(function (resp) {
-              // console.log(resp.data)
+            params.append('userSex', this.user.userSex)
+            axios.post('http://localhost:8888/login', params).then(function (resp) {
+              console.log(resp.data)
             })
-              // .then(res => {
-              //
-              // });
           }
         }
       }
     }
+
   }
 };
 
