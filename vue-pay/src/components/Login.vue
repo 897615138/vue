@@ -6,45 +6,23 @@
           <el-form ref="loginForm" :model="user" status-icon label-width="80px" :rules="rules">
             <h3>登录</h3>
             <hr>
-            <el-form-item  >
-              <el-select v-model="value" placeholder="请选择">
+            <el-form-item  label="登录方式" >
+                <el-select v-model="value" placeholder="请选择" @change="showType" ref="loginMethod">
                 <el-option
                   v-for="item in options"
                   :key="item.value"
                   :label="item.label"
-                  :value="item.value">
+                  :value="item.label"
+                >
                 </el-option>
-
               </el-select>
+                <el-form-item prop="userInfo" label="">
+                  <el-input v-model="user.userInfo"  placeholder="请输入"></el-input>
+                </el-form-item>
             </el-form-item>
 
-            <el-form-item prop="userName" label="用户名">
-              <el-input v-model="user.userName" placeholder="请输入用户名"></el-input>
-            </el-form-item>
-            <el-form-item prop="userName" label="昵称">
-              <el-input v-model="user.userNickname" placeholder="请输入昵称"></el-input>
-            </el-form-item>
-            <el-form-item prop="userEmail" label="邮箱">
-              <el-input v-model="user.userEmail" placeholder="请输入邮箱"></el-input>
-            </el-form-item>
-            <el-form-item prop="userPhone" label="手机号">
-              <el-input v-model="user.userPhone" placeholder="请输入手机号"></el-input>
-            </el-form-item>
-            <el-form-item prop="userSex" label="性别">
-              <el-radio-group v-model="user.userSex">
-                <el-radio label=0>保密</el-radio>
-                <el-radio label=1>男</el-radio>
-                <el-radio label=2>女</el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item prop="userPassword" label="设置密码">
+            <el-form-item prop="userPassword" label="密码">
               <el-input v-model="user.userPassword" show-userPassword placeholder="请输入密码"></el-input>
-            </el-form-item>
-            <el-form-item label="密码强度">
-              <password-strength v-model="user.userPassword" style="padding-top: 10px;"></password-strength>
-            </el-form-item>
-            <el-form-item prop="userPasswordTwice" label="重复密码">
-              <el-input v-model="user.userPasswordTwice" show-userPassword placeholder="请重复输入密码"></el-input>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="doLogin()">登录账号</el-button>
@@ -58,23 +36,19 @@
 
 <script>
 import axios from "axios";
-import PasswordStrength from "./PasswordStrength";
 
 export default {
   name: "Login",
-  components:{PasswordStrength},
   data() {
 
     return {
       user: {
-        userName: "",
-        userEmail: "",
-        userPhone: "",
+       userInfo:"",
         userPassword: "",
       },
       options: [{
         value: 'userName',
-        label: '用户名'
+        label: '用户名',
       }, {
         value: 'userEmail',
         label: '邮箱'
@@ -82,6 +56,8 @@ export default {
         value: 'userPhone',
         label: '手机号'
       }],
+      value: '',
+      type:'userName',
       rules: {
         userName: [
           {required: true, message: '请输入用户名', trigger: 'blur'},
@@ -121,12 +97,6 @@ export default {
         ],
         userPassword: [
           {required: true, message: '请输入密码', trigger: 'blur'},
-        ],
-        userPasswordTwice: [
-          {required: true, message: '请重复输入密码', trigger: 'blur'},
-        ],
-        userSex: [
-          {required: true, message: '选择性别', trigger: 'blur'}
         ]
       }
     }
@@ -180,34 +150,32 @@ export default {
   methods: {
     //登录 提交表单
     doLogin() {
-      if (!this.user.userName) {
-        this.$message.error("请输入用户名！");
-      } else if (!this.user.userEmail) {
-        this.$message.error("请输入邮箱！");
-      } else {
-        {
-          const reg = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
-          if (!reg.test(this.user.userEmail)) {
-            this.$message.error("请输入有效的邮箱！");
-          } else if (!this.user.userPassword) {
-            this.$message.error("请输入密码！");
-          } else if (!(this.user.userPassword === this.user.userPasswordTwice)) {
-            this.$message.error("两次密码输入不同!！");
-          } else {
-            console.log("登录")
-            const params = new URLSearchParams();
-            params.append('userName', this.user.userName)
-            params.append('userNickname', this.user.userNickname)
-            params.append('userEmail', this.user.userEmail)
-            params.append('userPhone', this.user.userPhone)
-            params.append('userPassword', this.user.userPassword)
-            params.append('userSex', this.user.userSex)
-            axios.post('http://localhost:8888/login', params).then(function (resp) {
-              console.log(resp.data)
-            })
-          }
+      this.$refs["loginForm"].validate((valid) => {
+        if (valid) {
+          console.log("登录")
+          const params = new URLSearchParams();
+          params.append(
+            this.options.find((item)=>{//这里的userList就是上面遍历的数据源
+            return item.label === this.value;//筛选出匹配数据
+          }).value
+            ,this.user.userInfo)
+          params.append('userPassword', this.user.userPassword)
+          axios.post('http://localhost:8888/login', params).then(function (resp) {
+            console.log(resp.data)
+          })
         }
-      }
+      })
+    },
+    showType(){
+      console.log(this.type)
+      console.log(this.value)
+      console.log( this.$refs.loginMethod)
+      const obj = this.options.find((item)=>{//这里的userList就是上面遍历的数据源
+        return item.label === this.value;//筛选出匹配数据
+      })
+      console.log(obj)
+      console.log(obj.value)
+
     }
 
   }

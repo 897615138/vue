@@ -1,9 +1,9 @@
 <template>
   <div class="container">
-    <div class="login clearfix">
-      <div class="login-wrap">
+    <div class="register clearfix">
+      <div class="register-wrap">
         <el-row type="flex" justify="center">
-          <el-form ref="loginForm" :model="user" status-icon label-width="80px" :rules="rules">
+          <el-form ref="registerForm" :model="user" status-icon label-width="80px" :rules="rules">
             <h3>注册</h3>
             <hr>
             <el-form-item prop="userName" label="用户名">
@@ -166,20 +166,8 @@ export default {
   methods: {
     //注册 提交表单
     doRegister() {
-      if (!this.user.userName) {
-        this.$message.error("请输入用户名！");
-      } else if (!this.user.userEmail) {
-        this.$message.error("请输入邮箱！");
-      } else {
-        {
-          const reg = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
-          if (!reg.test(this.user.userEmail)) {
-            this.$message.error("请输入有效的邮箱！");
-          } else if (!this.user.userPassword) {
-            this.$message.error("请输入密码！");
-          } else if (!(this.user.userPassword === this.user.userPasswordTwice)) {
-            this.$message.error("两次密码输入不同!！");
-          } else {
+      this.$refs["registerForm"].validate((valid) => {
+        if (valid) {
             console.log("注册")
             const params = new URLSearchParams();
             params.append('userName', this.user.userName)
@@ -192,11 +180,9 @@ export default {
               console.log(resp.data)
             })
           }
-        }
+        })
       }
     }
-
-  }
 };
 
 </script>
