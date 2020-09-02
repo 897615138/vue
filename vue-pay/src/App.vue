@@ -1,22 +1,22 @@
 <template>
   <div id="app">
-    <my-header></my-header>
+    <Header></Header>
 <!--    <img src="./assets/logo.png" alt="">-->
 <!--&lt;!&ndash;    <my-content :title="msg" :btnFn="FCfn" @newMsg="msg=$event"></my-content>&ndash;&gt;-->
 <!--    <register></register>-->
     <router-view/>
-    <my-bottom></my-bottom>
+    <Bottom></Bottom>
 
   </div>
 </template>
 
 <script>
 
-
-import Register from "./components/Register";
+import Header from "./components/Header";
+import Bottom from "./components/Bottom";
 export default {
   name: 'App',
-  components: {Register},
+  components: {Header, Bottom},
   data(){
     return{
       msg:"hello"
