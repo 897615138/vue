@@ -12,8 +12,8 @@
 
 <script>
 
-import Header from "./components/Header";
-import Bottom from "./components/Bottom";
+import Header from "./components/all/Header";
+import Bottom from "./components/all/Bottom";
 export default {
   name: 'App',
   components: {Header, Bottom},

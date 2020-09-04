@@ -1,8 +1,10 @@
 //路由表
-import Index from "./components/Index";
-import Register from "./components/Register";
-import Login from "./components/Login";
-import Manager from "./components/Manager";
+import Index from "./components/index/Index";
+import Register from "./components/register/Register";
+import Login from "./components/login/Login";
+import Manager from "./components/manager/Manager";
+import ProList from "./components/manager/ProList";
+import ProInfo from "./components/manager/ProInfo";
 export const routes = [
   {
   path: '/',
@@ -23,7 +25,26 @@ export const routes = [
   },
   {
     path: '/manager',
-    component: Manager
+    component: Manager,
+    children:[
+      {
+        path:'/proList',
+        component:ProList
+      },
+      {
+        path:'/proInfo/:id',
+        name:'proInfo',
+        component: ProInfo
+      },
+      {
+        path:'/proInfo',
+        redirect:'/proInfo/0'
+      }
+    ]
+  },
+  {
+    path:'/logout',
+    redirect:'/login'
   }
 
 ]

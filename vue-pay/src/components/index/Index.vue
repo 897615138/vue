@@ -17,9 +17,9 @@ export default {
   data() {
     return {
       pics: [
-        {url: require("../assets/img1.svg")},
-        {url: require("../assets/img2.svg")},
-        {url: require("../assets/img3.svg")}
+        {url: require("../../assets/img1.svg")},
+        {url: require("../../assets/img2.svg")},
+        {url: require("../../assets/img3.svg")}
       ]
     }
   }

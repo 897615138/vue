@@ -3,9 +3,9 @@
 import Vue from 'vue';
 import App from './App.vue';
 //组件引入
-import Header from "./components/Header";
-import Content from "./components/Content";
-import Bottom from "./components/Bottom";
+import Header from "./components/all/Header";
+import Content from "./components/all/Content";
+import Bottom from "./components/all/Bottom";
 
 import ElementUI from 'element-ui';
 import axios from 'axios'

@@ -340,11 +340,36 @@ npm install
         id: this.$route.params.id
         }
     }
-    
+    <router-link :to="{name:'proInfo',params:{id:1}}">商品信息</router-link>
+        <router-link to="{/proInfo/1">商品信息</router-link>
+        /proInfo/:id
 路由之间的跳转 
     1.<router-link to="路径"></router-link>
     2.标签里面写 :index="路径"
     3.js this.$router.push("路径")
+    
+嵌套路由 子路由 
+    静态路由表里配置
+    使用
+
+路由重定向 
+    redirect:'/proInfo/0'
+路由钩子函数
+export default {
+name: "ProInfo",
+  beforeRouteEnter:(to,from,next)=>{
+  console.log("准备进入商品信息页");
+  next(
+    console.log("进入到目标页面之后调用的函数")
+  );
+  },
+  beforeRouteLeave:(to,from,next)=>{
+    console.log("准备离开商品信息页");
+    next(
+      console.log("离开后")
+    );
+  }
+}
    
 vue中组件样式表的作用范围
     当 <style> 标签有 scoped 属性时，它的 CSS 只作用于当前组件中的元素。
@@ -358,3 +383,9 @@ vue中组件样式表的作用范围
     4)开发结束后 手动部署在自己的服务器上npm run build
                         .dist/build.js
 
+Mock数据
+    easyMock
+    
+vue-element-admin
+https://panjiachen.gitee.io/vue-element-admin-site/zh/guide/#%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84
+dashboard 控制台

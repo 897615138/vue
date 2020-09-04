@@ -1,48 +1,72 @@
 <template>
-  <div class="container">
-    <div class="login clearfix">
-      <div class="login-wrap">
-        <el-row type="flex" justify="center">
-          <el-form ref="loginForm" :model="user" status-icon label-width="80px" :rules="rules">
-            <h3>登录</h3>
-            <hr>
-            <el-form-item  label="登录方式" >
+  <div>
+    <Header>
+    </Header>
+    <div class="login-container">
+      <div class="login clearfix">
+        <div class="login-wrap">
+          <el-row type="flex" justify="center">
+            <el-form ref="loginForm" :model="user" status-icon label-width="80px" :rules="rules">
+              <h3>登录</h3>
+              <hr>
+              <el-form-item  label="登录方式" >
                 <el-select v-model="value" placeholder="请选择"  ref="loginMethod">
-                <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.label"
-                >
-                </el-option>
-              </el-select>
+                  <el-option
+                    v-for="item in options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.label"
+                  >
+                  </el-option>
+                </el-select>
                 <el-form-item prop="userInfo" label="">
                   <el-input v-model="user.userInfo"  placeholder="请输入"></el-input>
                 </el-form-item>
-            </el-form-item>
+              </el-form-item>
+              <el-form-item prop="userPassword" label="密码">
+                <el-input
+                  v-model="user.userPassword"
+                  :type="passwordType"
+                  :key="passwordType"
+                  name="password"
+                  placeholder="请输入密码"
+                  tabindex="2"
+                  autocomplete="on"
+                  @keyup.native="checkCapslock"
+                  @blur="capsTooltip = false"
+                  @keyup.enter.native="doLogin"
+                  show-userPassword >
 
-            <el-form-item prop="userPassword" label="密码">
-              <el-input v-model="user.userPassword" show-userPassword placeholder="请输入密码"></el-input>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="doLogin()">登录账号</el-button>
-            </el-form-item>
-          </el-form>
-        </el-row>
+                </el-input>
+              </el-form-item>
+              <span class="show-pwd" @click="showPwd">
+            <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+          </span>
+              <el-form-item>
+                <el-button type="primary" @click="doLogin()">登录账号</el-button>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="toReg()">注册账号</el-button>
+              </el-form-item>
+            </el-form>
+          </el-row>
+        </div>
       </div>
-    </div>
-  </div>
+    </div></div>
+
 </template>
 
 <script>
 import axios from "axios";
+import Header from "@/views/all/Header";
 export default {
   name: "Login",
+  components: {Header},
   data() {
 
     return {
       user: {
-       userInfo:"",
+        userInfo:"",
         userPassword: "",
       },
       options: [{
@@ -57,6 +81,7 @@ export default {
       }],
       value: '',
       type:'userName',
+      passwordType: 'password',
       rules: {
         userName: [
           {required: true, message: '请输入用户名', trigger: 'blur'},
@@ -155,11 +180,12 @@ export default {
         if (valid) {
           console.log("登录")
           const params = new URLSearchParams();
+          console.log(that.value)
           params.append(
-            this.options.find((item)=>{//这里的userList就是上面遍历的数据源
-            return item.label === this.value;//筛选出匹配数据
-          }).value
-            ,this.user.userInfo)
+            that.options.find((item)=>{//这里的userList就是上面遍历的数据源
+              return item.label === that.value;//筛选出匹配数据
+            }).value
+            ,that.user.userInfo)
           params.append('userPassword', this.user.userPassword)
           axios.post('http://localhost:8888/login', params).then(function (resp) {
             console.log(resp.data)
@@ -171,6 +197,23 @@ export default {
         }
       })
     },
+    toReg(){
+      this.$router.push('/register')
+    },
+    checkCapslock(e) {
+      const { key } = e
+      this.capsTooltip = key && key.length === 1 && (key >= 'A' && key <= 'Z')
+    },
+    showPwd() {
+      if (this.passwordType === 'password') {
+        this.passwordType = ''
+      } else {
+        this.passwordType = 'password'
+      }
+      this.$nextTick(() => {
+        this.$refs.password.focus()
+      })
+    },
     successLogin() {
       const h = this.$createElement;
       this.$notify({
@@ -179,22 +222,10 @@ export default {
         type: 'success'
       });
     }
-    // showType(){
-    //   console.log(this.type)
-    //   console.log(this.value)
-    //   console.log( this.$refs.loginMethod)
-    //   const obj = this.options.find((item)=>{//这里的userList就是上面遍历的数据源
-    //     return item.label === this.value;//筛选出匹配数据
-    //   })
-    //   console.log(obj)
-    //   console.log(obj.value)
-    // }
-
   }
 };
 
 </script>
-
-<style scoped>
+<style lang="scss" scoped>
 
 </style>

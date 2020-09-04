@@ -1,10 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import VueRouter from 'vue-router'
-import Index from "../components/Index";
-import Register from "../components/Register";
-import Login from "../components/Login";
-import Manager from "../components/Manager";
+import Index from '../components/index/Index';
+import Register from "../components/register/Register";
+import Login from "../components/login/Login";
+import Manager from "../components/manager/Manager";
+import ProInfo from "../components/manager/ProInfo";
+import ProList from "../components/manager/ProList";
 
 export let routes;
 
@@ -33,7 +35,17 @@ export default new Router({
     },
     {
       path: '/manager',
-      component: Manager
+      component: Manager,
+      children:[
+        {
+          path:'/proList',
+          component:ProList
+        },
+        {
+          path:'/proInfo',
+          component: ProInfo
+        }
+      ]
     }
   ]
 })
