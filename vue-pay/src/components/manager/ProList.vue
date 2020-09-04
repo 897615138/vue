@@ -45,16 +45,16 @@
           <el-dialog title="商品信息" :visible.sync="editFormVisible">
             <el-form :model="form" ref="editForm">
               <el-form-item label="商品id" :label-width="formLabelWidth">
-                <el-input v-model="form.proId" autocomplete="off"></el-input>
+                <el-input v-model="form.proId" autocomplete="off" readonly></el-input>
               </el-form-item>
               <el-form-item label="商品名称" :label-width="formLabelWidth">
                 <el-input v-model="form.proName" autocomplete="off"></el-input>
               </el-form-item>
               <el-form-item label="用户id" :label-width="formLabelWidth">
-                <el-input v-model="form.userId" autocomplete="off"></el-input>
+                <el-input v-model="form.userId" autocomplete="off" ></el-input>
               </el-form-item>
               <el-form-item label="是否删除" :label-width="formLabelWidth">
-                <el-input v-model="form.proDelete" autocomplete="off"></el-input>
+                <el-input v-model="form.proDelete" autocomplete="off" readonly></el-input>
               </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -70,11 +70,12 @@
               icon="el-icon-info"
               iconColor="red"
               title="确定删除吗？"
+              @onConfirm="handleDelete(scope.$index, scope.row)"
             >
               <el-button slot="reference"
                          size="mini"
                          type="danger"
-                         @click="handleDelete(scope.$index, scope.row)">删除
+                         >删除
               </el-button>
             </el-popconfirm>
           </template>
@@ -96,10 +97,7 @@
                        size="mini"
                        @click="openNew()">新建</el-button>
             <el-dialog title="商品信息" :visible.sync="newFormVisible">
-              <el-form :model="newForm">
-                <el-form-item label="商品id" :label-width="formLabelWidth">
-                  <el-input v-model="newForm.proId" autocomplete="off"></el-input>
-                </el-form-item>
+              <el-form :model="newForm" ref="newForm">
                 <el-form-item label="商品名称" :label-width="formLabelWidth">
                   <el-input v-model="newForm.proName" autocomplete="off"></el-input>
                 </el-form-item>
@@ -108,8 +106,8 @@
                 </el-form-item>
               </el-form>
               <div slot="footer" class="dialog-footer">
-                <el-button @click="editFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="editFormVisible = false">提交</el-button>
+                <el-button @click="newFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="submitNew()">提交</el-button>
               </div>
             </el-dialog>
         </template>
@@ -149,10 +147,8 @@ export default {
         proDelete:''
       },
       newForm:{
-        proId:'',
         proName:'',
-        userId:'',
-        proDelete:''
+        userId:''
       },
       formLabelWidth: '120px',
       editFormVisible: false,
@@ -185,7 +181,22 @@ export default {
 
     },
     handleDelete(index, row) {
-      console.log(index, row);
+      const that=this
+      console.log(row.proId);
+      console.log("删除")
+      const params = new URLSearchParams();
+      params.append('proId', row.proId)
+      axios.post('http://localhost:8888/pro/delete', params).then(function (resp) {
+        console.log(resp.data)
+        if (resp.data.flag)
+        {
+          that.successDel()
+        }else {
+          that.failDel()
+        }
+        that.getList()
+      })
+
     },
     openNew(){
       this.newFormVisible = true
@@ -195,7 +206,7 @@ export default {
       const that=this
       this.$refs["editForm"].validate((valid) => {
         if (valid) {
-          console.log("注册")
+          console.log("修改")
           const params = new URLSearchParams();
           params.append('proId', this.form.proId)
           params.append('proName', this.form.proName)
@@ -211,6 +222,29 @@ export default {
               that.failUp()
             }
         that.getList()
+          })
+        }
+      })
+    },
+    submitNew(){
+      this.newFormVisible = false
+      const that=this
+      this.$refs["newForm"].validate((valid) => {
+        if (valid) {
+          console.log("新建")
+          const params = new URLSearchParams();
+          params.append('proName', this.form.proName)
+          params.append('userId', this.form.userId)
+          axios.post('http://localhost:8888/pro/new', params).then(function (resp) {
+            console.log(resp.data)
+            that.$refs["editForm"].resetFields()
+            that.$refs["editForm"].clearValidate()
+            if (resp.data.flag)
+            {that.successNew()
+            }else {
+              that.failNew()
+            }
+            that.getList()
           })
         }
       })
@@ -232,11 +266,43 @@ export default {
         type: 'success'
       });
     },
+    successDel() {
+      const h = this.$createElement;
+      this.$notify({
+        title: '恭喜',
+        message: '删除成功',
+        type: 'success'
+      });
+    },
+    successNew() {
+      const h = this.$createElement;
+      this.$notify({
+        title: '恭喜',
+        message: '新建成功',
+        type: 'success'
+      });
+    },
     failUp() {
       const h = this.$createElement;
       this.$notify({
         title: '抱歉',
         message: '修改失败',
+        type: 'fail'
+      });
+    },
+    failDel() {
+      const h = this.$createElement;
+      this.$notify({
+        title: '抱歉',
+        message: '删除失败',
+        type: 'fail'
+      });
+    },
+    failNew() {
+      const h = this.$createElement;
+      this.$notify({
+        title: '抱歉',
+        message: '新建失败',
         type: 'fail'
       });
     }
