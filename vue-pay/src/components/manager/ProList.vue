@@ -1,7 +1,8 @@
 <template>
   <div>
+    <el-button type="primary"  @click="handleCurrentChange(1)">初始化列表</el-button>
     <el-table
-      :data="proList.filter(data => !search || data.proName.toLowerCase().includes(search.toLowerCase())|| data.proId.toLowerCase().includes(search.toLowerCase()))"
+      :data="tempList.filter(data => !search || data.proName.toLowerCase().includes(search.toLowerCase())|| data.proId.toLowerCase().includes(search.toLowerCase()))"
       style="width: 100%"
       tooltip-effect="dark"
       @selection-change="handleSelectionChange"
@@ -113,16 +114,30 @@
         </template>
       </el-table-column>
     </el-table>
-
+    <div class="block">
+      <span class="demonstration"></span>
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[5,10, 15, 20]"
+        :page-size="pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="proList.length">
+      </el-pagination>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import ProListPage from "./ProListPage";
+
 
 
 export default {
   name: "ProInfo",
+  components: {ProListPage},
   beforeRouteEnter: (to, from, next) => {
     console.log("准备进入商品列表页");
     next(
@@ -139,6 +154,8 @@ export default {
     return {
       proList: [
       ],
+      currentPage:1,
+      pageSize:10,
       search: '',
       form:{
         proId:'',
@@ -153,10 +170,20 @@ export default {
       formLabelWidth: '120px',
       editFormVisible: false,
       newFormVisible: false,
+      tempList:[]
     }
   },
   created() {
-    this.getList()
+    // console.log('初始化')
+    // // this.handleCurrentChange(this.currentPage)
+    // console.log(`当前页: ${this.currentPage}`);
+    // console.log(this.pageSize)
+    // this.getList()
+    // console.log('商品列表')
+    // console.log(this.proList)
+    // console.log('临时列表')
+    // console.log(this.tempList)
+    // this.currentChangePage(this.proList,this.currentPage)
   },
   methods: {
     handleClick(row) {
@@ -195,6 +222,7 @@ export default {
           that.failDel()
         }
         that.getList()
+        that.currentChangePage(that.proList,that.currentPage)
       })
 
     },
@@ -222,6 +250,7 @@ export default {
               that.failUp()
             }
         that.getList()
+            that.currentChangePage(that.proList,that.currentPage)
           })
         }
       })
@@ -233,18 +262,19 @@ export default {
         if (valid) {
           console.log("新建")
           const params = new URLSearchParams();
-          params.append('proName', this.form.proName)
-          params.append('userId', this.form.userId)
+          params.append('proName', this.newForm.proName)
+          params.append('userId', this.newForm.userId)
           axios.post('http://localhost:8888/pro/new', params).then(function (resp) {
             console.log(resp.data)
-            that.$refs["editForm"].resetFields()
-            that.$refs["editForm"].clearValidate()
+            that.$refs["newForm"].resetFields()
+            that.$refs["newForm"].clearValidate()
             if (resp.data.flag)
             {that.successNew()
             }else {
               that.failNew()
             }
             that.getList()
+            that.currentChangePage(that.proList,that.currentPage)
           })
         }
       })
@@ -255,7 +285,6 @@ export default {
         //console.log(resp.data.data)
         that.proList = resp.data.data
         //console.log('ok')
-
       })
     },
     successUp() {
@@ -305,6 +334,30 @@ export default {
         message: '新建失败',
         type: 'fail'
       });
+    },
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+      this.pageSize=val
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      console.log(this.pageSize)
+      this.getList()
+      console.log('商品列表')
+      console.log(this.proList)
+      this.currentChangePage(this.proList,val)
+      console.log('临时列表')
+      console.log(this.tempList)
+    },
+    currentChangePage(list,currentPage) {
+      let from = (currentPage - 1) * this.pageSize;
+      let to = currentPage * this.pageSize;
+      this.tempList = [];
+      for (; from < to; from++) {
+        if (list[from]) {
+          this.tempList.push(list[from]);
+        }
+      }
     }
   }
 }
