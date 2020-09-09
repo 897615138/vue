@@ -6,43 +6,45 @@
 </head>
 <body>
 <div id="app">
-<model1></model1>
+    <model1></model1>
     <model2></model2>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script>
-    const model2={
-        template:"<div><button type='button' @click='btnFn()'>点我2</button> </div>",
-        methods:{
-            btnFn:function () {
+    const model2 = {
+        template: "<div><button type='button' @click='btnFn()'>点我2</button> </div>",
+        methods: {
+            btnFn: function () {
                 alert("")
             }
         },
         data() {
             return {
-                name:'wj',
-                age:21
+                name: 'wj',
+                age: 21
             };
         }
     }
-    Vue.component("model1",{
-        template:"<div><button type='button' @click='btnFn()'>点我</button> </div>",
-        methods:{
-            btnFn:function () {
+    //全局创建组件
+    Vue.component("model1", {
+        template: "<div><button type='button' @click='btnFn()'>点我</button> </div>",
+        methods: {
+            btnFn: function () {
                 alert("")
             }
         },
         data() {
             return {
-                name:'wj',
-                age:21
+                name: 'wj',
+                age: 21
             };
         }
     })
+    //局部创建组件
     new Vue({
-        el:"#app",
-        components:{
-            "model2":model2
+        el: "#app",
+        components: {
+            "model2": model2
         }
     })
 

@@ -2,7 +2,7 @@
   <div>
     {{ msg }}
     {{ title}}
-    <button type="button" @click="btnFn('hello123')">点我父传子</button>
+    <button type="button" @click="btnFn('父传子')">点我父传子</button>
     <button type="button" @click="tData()">点我子传父</button>
   </div>
 </template>
@@ -28,9 +28,10 @@ export default {
   },
   methods:{
     tData(){
-      this.$emit("newMsg","abc")
+      this.$emit("newMsg","子传父")
     }
-  }
+  },
+
 }
 </script>
 

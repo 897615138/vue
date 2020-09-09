@@ -13,16 +13,16 @@
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script>
     new Vue({
-        el:'#app',
-        data:{},
-        methods:{
-            getCurrentTime1:function () {
+        el: '#app',
+        data: {},
+        methods: {
+            getCurrentTime1: function () {
                 return new Date();
             }
         },
-        computed:{
+        computed: {
             //时间不会实时更新
-            getCurrentTime2:function () {
+            getCurrentTime2: function () {
                 return new Date();
             }
         }

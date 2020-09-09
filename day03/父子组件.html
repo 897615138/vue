@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+    <!-- 通过 v-bind  传递 参数  通过 v-on  传递 方法  -->
+    <s-table :data="stu" @fn="del"></s-table>
+    <br/>
+
+    <s-table :data="stu"></s-table>
+</div>
+
+<script src="js/vue.js"></script>
+
+
+<script>
+    const  sTable = {
+        template: `<table border="1">
+                <tbody>
+                    <tr v-for="s in data" :key="s.sno">
+                        <td>{{s.sno}}</td>
+                        <td>{{s.name}}</td>
+                        <td>{{s.age}}</td>
+                        <td><a href="javascript:;" @click="del(s.sno)">删除</a></td>
+                    </tr>
+                </tbody>
+            </table>`,
+        // props:['data']
+        props: {
+            data :{
+                /* 类型的约束 */
+                type:Array,
+                default: []
+            }
+        },
+        methods:{
+            del(sno){
+                this.$emit('fn',sno)/* 子组件调用父组件中的方法 */
+            }
+        }
+    }
+    Vue.component('s-table',sTable)
+
+    new Vue({
+        el: '#app',
+        data:{
+            stu:[{sno:1001,name:'张三1',age:10},
+                {sno:1002,name:'张三2',age:10},
+                {sno:1003,name:'张三3',age:10}],
+            s:{sno:1001,name:'张三1',age:10}
+        },
+        methods:{
+            del(sno){
+                const index= this.stu.findIndex(el=>el.sno===sno)
+                this.stu.splice(index,1)
+            }
+        }
+
+    })
+</script>
+</body>
+</html>

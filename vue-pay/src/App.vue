@@ -1,37 +1,33 @@
 <template>
   <div id="app">
     <Header></Header>
-<!--    <img src="./assets/logo.png" alt="">-->
-<!--&lt;!&ndash;    <my-content :title="msg" :btnFn="FCfn" @newMsg="msg=$event"></my-content>&ndash;&gt;-->
-<!--    <register></register>-->
+    <!--    <img src="./assets/logo.png" alt="">-->
+<!--    <my-content :title="msg" :btnFn="FCfn" @newMsg="msg=$event"></my-content>-->
+    <!--    <register></register>-->
     <router-view/>
     <Bottom></Bottom>
-
   </div>
 </template>
-
 <script>
 
 import Header from "./components/all/Header";
 import Bottom from "./components/all/Bottom";
+
 export default {
   name: 'App',
   components: {Header, Bottom},
-  data(){
-    return{
-      msg:"hello"
+  data() {
+    return {
+      msg: "hello"
     }
   },
-  methods:{
-    FCfn:function (m) {
-      this.msg=m
+  methods: {
+    FCfn: function (m) {
+      this.msg = m
     }
   }
 }
-
-
 </script>
-
 <style>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

@@ -5,11 +5,12 @@ import Login from "./components/login/Login";
 import Manager from "./components/manager/Manager";
 import ProList from "./components/manager/ProList";
 import ProInfo from "./components/manager/ProInfo";
+
 export const routes = [
   {
-  path: '/',
-  name: 'Index',
-  component: Index
+    path: '/',
+    name: 'Index',
+    component: Index
   },
   {
     path: '/index',
@@ -26,25 +27,25 @@ export const routes = [
   {
     path: '/manager',
     component: Manager,
-    children:[
+    children: [
       {
-        path:'/proList',
-        component:ProList
+        path: '/proList',
+        component: ProList
       },
       {
-        path:'/proInfo/:id',
-        name:'proInfo',
+        path: '/proInfo/:id',
+        name: 'proInfo',
         component: ProInfo
       },
       {
-        path:'/proInfo',
-        redirect:'/proInfo/0'
+        path: '/proInfo',
+        redirect: '/proInfo/0'
       }
     ]
   },
   {
-    path:'/logout',
-    redirect:'/login'
+    path: '/logout',
+    redirect: '/login'
   }
 
 ]
