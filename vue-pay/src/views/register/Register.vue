@@ -46,11 +46,11 @@
 
 <script>
 import axios from "axios";
-import PasswordStrength from "./PasswordStrength";
+import PasswordStrength from "../../components/register/PasswordStrength";
 
 export default {
   name: "Register",
-  components:{PasswordStrength},
+  components: {PasswordStrength},
   data() {
 
     return {
@@ -166,27 +166,27 @@ export default {
   methods: {
     //注册 提交表单
     doRegister() {
-      const that=this
+      const that = this
       this.$refs["registerForm"].validate((valid) => {
         if (valid) {
-            console.log("注册")
-            const params = new URLSearchParams();
-            params.append('userName', this.user.userName)
-            params.append('userNickname', this.user.userNickname)
-            params.append('userEmail', this.user.userEmail)
-            params.append('userPhone', this.user.userPhone)
-            params.append('userPassword', this.user.userPassword)
-            params.append('userSex', this.user.userSex)
-            axios.post('http://localhost:8888/register', params).then(function (resp) {
-              console.log(resp.data)
-              that.$refs["registerForm"].resetFields()
-              that.$refs["registerForm"].clearValidate()
-              that.successReg()
-              that.$router.push("/login")
-            })
-          }
-        })
-      },
+          console.log("注册")
+          const params = new URLSearchParams();
+          params.append('userName', this.user.userName)
+          params.append('userNickname', this.user.userNickname)
+          params.append('userEmail', this.user.userEmail)
+          params.append('userPhone', this.user.userPhone)
+          params.append('userPassword', this.user.userPassword)
+          params.append('userSex', this.user.userSex)
+          axios.post('http://localhost:8888/register', params).then(function (resp) {
+            console.log(resp.data)
+            that.$refs["registerForm"].resetFields()
+            that.$refs["registerForm"].clearValidate()
+            that.successReg()
+            that.$router.push("/login")
+          })
+        }
+      })
+    },
     successReg() {
       const h = this.$createElement;
       this.$notify({
@@ -195,7 +195,7 @@ export default {
         type: 'success'
       });
     }
-    }
+  }
 };
 
 </script>

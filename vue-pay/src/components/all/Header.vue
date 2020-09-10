@@ -16,12 +16,9 @@
           </el-dropdown-menu>
         </el-dropdown>
       </el-menu-item>
-
-
     </el-menu>
   </div>
 </template>
-
 <script>
 export default {
   name: "Header",
@@ -33,15 +30,11 @@ export default {
         {name: '/login', navItem: '登录'},
         {name: '/index', navItem: '首页'},
         {name: '/manager', navItem: '控制台'}
-        // {name:'/personalCenter',navItem:'个人中心'},
-        // {name:'/manageCenter',navItem:'管理员中心'},
       ]
     }
   },
   methods: {}
 }
 </script>
-
 <style scoped>
-
 </style>

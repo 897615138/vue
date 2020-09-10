@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div id="app">
+        <!-- 路由跳转  :  v-bind  -->
+        <router-link :to="{name:'Login'}">toLogin</router-link>
+        <router-link :to="{name:'Register'}">toReg</router-link>
+
+           <!-- 根据 路由 的path 路径 展示对应的组件 -->
+        <router-view></router-view>
+
+        <button @click="toBack">back</button>
+    </div>
+
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<script>
+  /* 创建路由  路径 与组件 之间的映射关系  */
+
+ const  login = {
+     template : `<div>我是登录模块</div>`,
+ }
+ const register  ={
+     template : `<div>我是注册模块</div>`,
+ }
+ /*  路由 默认访问模式  hash 模式   localhost:8000/s#login
+ *      history 模式 路由对象记录访问历史
+ *  */
+  const  router = new VueRouter({
+      mode: 'history',
+      routes:[
+          /* 映射关系*/
+          {
+              name:'Login',// 名称是唯一的
+              path: '/login',// 路径
+              component: login // 路径对应的 组件名称
+          },
+          {
+              name:'Register',
+              path: '/register',
+              component: register
+          }
+
+      ]
+  })
+   new  Vue({
+       el:'#app',
+       router,
+       methods:{
+           toBack(){
+                console.log(this.$router)
+           }
+       }
+   })
+
+
+</script>
+
+</body>
+</html>

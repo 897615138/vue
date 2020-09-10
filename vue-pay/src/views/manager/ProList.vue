@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button type="primary"  @click="handleCurrentChange(1)">初始化列表</el-button>
+    <el-button type="primary" @click="handleCurrentChange(1)">初始化列表</el-button>
     <el-table
       :data="tempList.filter(data => !search || data.proName.toLowerCase().includes(search.toLowerCase())|| data.proId.toLowerCase().includes(search.toLowerCase()))"
       style="width: 100%"
@@ -8,7 +8,7 @@
       @selection-change="handleSelectionChange"
       :default-sort="{prop: 'proId'}"
     >
-<!--   全选框   -->
+      <!--   全选框   -->
       <el-table-column
         type="selection"
         width="55">
@@ -42,7 +42,8 @@
           <el-button type="success"
                      slot="reference"
                      size="mini"
-                     @click="handleEdit(scope.$index, scope.row)">修改</el-button>
+                     @click="handleEdit(scope.$index, scope.row)">修改
+          </el-button>
           <el-dialog title="商品信息" :visible.sync="editFormVisible">
             <el-form :model="form" ref="editForm">
               <el-form-item label="商品id" :label-width="formLabelWidth">
@@ -52,7 +53,7 @@
                 <el-input v-model="form.proName" autocomplete="off"></el-input>
               </el-form-item>
               <el-form-item label="用户id" :label-width="formLabelWidth">
-                <el-input v-model="form.userId" autocomplete="off" ></el-input>
+                <el-input v-model="form.userId" autocomplete="off"></el-input>
               </el-form-item>
               <el-form-item label="是否删除" :label-width="formLabelWidth">
                 <el-input v-model="form.proDelete" autocomplete="off" readonly></el-input>
@@ -76,7 +77,7 @@
               <el-button slot="reference"
                          size="mini"
                          type="danger"
-                         >删除
+              >删除
               </el-button>
             </el-popconfirm>
           </template>
@@ -90,27 +91,28 @@
             placeholder="输入关键字搜索"/>
         </template>
       </el-table-column>
-<!--   新建商品   -->
+      <!--   新建商品   -->
       <el-table-column>
         <template slot="header" slot-scope="scope">
-            <el-button type="success"
-                       slot="reference"
-                       size="mini"
-                       @click="openNew()">新建</el-button>
-            <el-dialog title="商品信息" :visible.sync="newFormVisible">
-              <el-form :model="newForm" ref="newForm">
-                <el-form-item label="商品名称" :label-width="formLabelWidth">
-                  <el-input v-model="newForm.proName" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="用户id" :label-width="formLabelWidth">
-                  <el-input v-model="newForm.userId" autocomplete="off"></el-input>
-                </el-form-item>
-              </el-form>
-              <div slot="footer" class="dialog-footer">
-                <el-button @click="newFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="submitNew()">提交</el-button>
-              </div>
-            </el-dialog>
+          <el-button type="success"
+                     slot="reference"
+                     size="mini"
+                     @click="openNew()">新建
+          </el-button>
+          <el-dialog title="商品信息" :visible.sync="newFormVisible">
+            <el-form :model="newForm" ref="newForm">
+              <el-form-item label="商品名称" :label-width="formLabelWidth">
+                <el-input v-model="newForm.proName" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="用户id" :label-width="formLabelWidth">
+                <el-input v-model="newForm.userId" autocomplete="off"></el-input>
+              </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+              <el-button @click="newFormVisible = false">取 消</el-button>
+              <el-button type="primary" @click="submitNew()">提交</el-button>
+            </div>
+          </el-dialog>
         </template>
       </el-table-column>
     </el-table>
@@ -131,8 +133,7 @@
 
 <script>
 import axios from "axios";
-import ProListPage from "./ProListPage";
-
+import ProListPage from "../../components/manager/ProListPage";
 
 
 export default {
@@ -152,38 +153,27 @@ export default {
   },
   data() {
     return {
-      proList: [
-      ],
-      currentPage:1,
-      pageSize:10,
+      proList: [],
+      currentPage: 1,
+      pageSize: 10,
       search: '',
-      form:{
-        proId:'',
-        proName:'',
-        userId:'',
-        proDelete:''
+      form: {
+        proId: '',
+        proName: '',
+        userId: '',
+        proDelete: ''
       },
-      newForm:{
-        proName:'',
-        userId:''
+      newForm: {
+        proName: '',
+        userId: ''
       },
       formLabelWidth: '120px',
       editFormVisible: false,
       newFormVisible: false,
-      tempList:[]
+      tempList: []
     }
   },
   created() {
-    // console.log('初始化')
-    // // this.handleCurrentChange(this.currentPage)
-    // console.log(`当前页: ${this.currentPage}`);
-    // console.log(this.pageSize)
-    // this.getList()
-    // console.log('商品列表')
-    // console.log(this.proList)
-    // console.log('临时列表')
-    // console.log(this.tempList)
-    // this.currentChangePage(this.proList,this.currentPage)
   },
   methods: {
     handleClick(row) {
@@ -203,35 +193,34 @@ export default {
     },
     handleEdit(index, row) {
       this.editFormVisible = true
-     //console.log(index, row);
-      this.form=row
+      //console.log(index, row);
+      this.form = row
 
     },
     handleDelete(index, row) {
-      const that=this
+      const that = this
       console.log(row.proId);
       console.log("删除")
       const params = new URLSearchParams();
       params.append('proId', row.proId)
       axios.post('http://localhost:8888/pro/delete', params).then(function (resp) {
         console.log(resp.data)
-        if (resp.data.flag)
-        {
+        if (resp.data.flag) {
           that.successDel()
-        }else {
+        } else {
           that.failDel()
         }
         that.getList()
-        that.currentChangePage(that.proList,that.currentPage)
+        that.currentChangePage(that.proList, that.currentPage)
       })
 
     },
-    openNew(){
+    openNew() {
       this.newFormVisible = true
     },
-    submitEdit(){
+    submitEdit() {
       this.editFormVisible = false
-      const that=this
+      const that = this
       this.$refs["editForm"].validate((valid) => {
         if (valid) {
           console.log("修改")
@@ -244,20 +233,20 @@ export default {
             console.log(resp.data)
             that.$refs["editForm"].resetFields()
             that.$refs["editForm"].clearValidate()
-            if (resp.data.flag)
-            {that.successUp()
-            }else {
+            if (resp.data.flag) {
+              that.successUp()
+            } else {
               that.failUp()
             }
-        that.getList()
-            that.currentChangePage(that.proList,that.currentPage)
+            that.getList()
+            that.currentChangePage(that.proList, that.currentPage)
           })
         }
       })
     },
-    submitNew(){
+    submitNew() {
       this.newFormVisible = false
-      const that=this
+      const that = this
       this.$refs["newForm"].validate((valid) => {
         if (valid) {
           console.log("新建")
@@ -268,13 +257,13 @@ export default {
             console.log(resp.data)
             that.$refs["newForm"].resetFields()
             that.$refs["newForm"].clearValidate()
-            if (resp.data.flag)
-            {that.successNew()
-            }else {
+            if (resp.data.flag) {
+              that.successNew()
+            } else {
               that.failNew()
             }
             that.getList()
-            that.currentChangePage(that.proList,that.currentPage)
+            that.currentChangePage(that.proList, that.currentPage)
           })
         }
       })
@@ -337,7 +326,7 @@ export default {
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
-      this.pageSize=val
+      this.pageSize = val
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
@@ -345,11 +334,11 @@ export default {
       this.getList()
       console.log('商品列表')
       console.log(this.proList)
-      this.currentChangePage(this.proList,val)
+      this.currentChangePage(this.proList, val)
       console.log('临时列表')
       console.log(this.tempList)
     },
-    currentChangePage(list,currentPage) {
+    currentChangePage(list, currentPage) {
       let from = (currentPage - 1) * this.pageSize;
       let to = currentPage * this.pageSize;
       this.tempList = [];

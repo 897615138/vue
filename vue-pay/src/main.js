@@ -12,17 +12,18 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import 'element-ui/lib/theme-chalk/index.css';
 import VueRouter from "vue-router";//引入路由模块
-import {routes} from "./router";
+import Router from "vue-router";
+import router from "./router/index";
+
 import ViewUI from 'view-design';
 import 'view-design/dist/styles/iview.css';
 
+
 Vue.use(ElementUI);
 Vue.use(ViewUI);
+Vue.use(Router)
+Vue.use(VueRouter)
 
-Vue.use(VueRouter);
-const router = new VueRouter({
-  routes:routes
-})
 
 new Vue({
   el: '#app',

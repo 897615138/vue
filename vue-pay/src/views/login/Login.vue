@@ -7,8 +7,8 @@
             <el-form ref="loginForm" :model="user" status-icon label-width="80px" :rules="rules">
               <h3>登录</h3>
               <hr>
-              <el-form-item  label="登录方式" >
-                <el-select v-model="value" placeholder="请选择"  ref="loginMethod">
+              <el-form-item label="登录方式">
+                <el-select v-model="value" placeholder="请选择" ref="loginMethod">
                   <el-option
                     v-for="item in options"
                     :key="item.value"
@@ -18,7 +18,7 @@
                   </el-option>
                 </el-select>
                 <el-form-item prop="userInfo" label="">
-                  <el-input v-model="user.userInfo"  placeholder="请输入"></el-input>
+                  <el-input v-model="user.userInfo" placeholder="请输入"></el-input>
                 </el-form-item>
               </el-form-item>
               <el-form-item prop="userPassword" label="密码">
@@ -33,12 +33,11 @@
                   @keyup.native="checkCapslock"
                   @blur="capsTooltip = false"
                   @keyup.enter.native="doLogin"
-                  show-userPassword >
-
+                  show-userPassword>
                 </el-input>
               </el-form-item>
               <span class="show-pwd" @click="showPwd">
-            <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+            <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"/>
           </span>
               <el-form-item>
                 <el-button type="primary" @click="doLogin()">登录账号</el-button>
@@ -50,19 +49,20 @@
           </el-row>
         </div>
       </div>
-    </div></div>
+    </div>
+  </div>
 
 </template>
 
 <script>
 import axios from "axios";
+
 export default {
   name: "Login",
   data() {
-
     return {
       user: {
-        userInfo:"",
+        userInfo: "",
         userPassword: "",
       },
       options: [{
@@ -76,7 +76,7 @@ export default {
         label: '手机号'
       }],
       value: '',
-      type:'userName',
+      type: 'userName',
       passwordType: 'password',
       rules: {
         userName: [
@@ -170,7 +170,7 @@ export default {
   methods: {
     //登录 提交表单
     doLogin() {
-      const that=this
+      const that = this
       console.log(this.$refs["loginForm"])
       this.$refs["loginForm"].validate((valid) => {
         if (valid) {
@@ -178,10 +178,10 @@ export default {
           const params = new URLSearchParams();
           console.log(that.value)
           params.append(
-            that.options.find((item)=>{//这里的userList就是上面遍历的数据源
+            that.options.find((item) => {//这里的userList就是上面遍历的数据源
               return item.label === that.value;//筛选出匹配数据
             }).value
-            ,that.user.userInfo)
+            , that.user.userInfo)
           params.append('userPassword', this.user.userPassword)
           axios.post('http://localhost:8888/login', params).then(function (resp) {
             console.log(resp.data)
@@ -193,11 +193,11 @@ export default {
         }
       })
     },
-    toReg(){
+    toReg() {
       this.$router.push('/register')
     },
     checkCapslock(e) {
-      const { key } = e
+      const {key} = e
       this.capsTooltip = key && key.length === 1 && (key >= 'A' && key <= 'Z')
     },
     showPwd() {
@@ -222,6 +222,6 @@ export default {
 };
 
 </script>
-<style  scoped>
+<style scoped>
 
 </style>

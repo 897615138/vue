@@ -7,10 +7,8 @@
         </el-carousel-item>
       </el-carousel>
     </template>
-
   </div>
 </template>
-
 <script>
 export default {
   name: "Index",
@@ -25,7 +23,6 @@ export default {
   }
 }
 </script>
-
 <style scoped>
 .el-carousel__item h3 {
   color: #475669;
@@ -34,6 +31,4 @@ export default {
   line-height: 300px;
   margin: 0;
 }
-
-
 </style>

@@ -1,10 +1,10 @@
 //路由表
-import Index from "./components/index/Index";
-import Register from "./components/register/Register";
-import Login from "./components/login/Login";
-import Manager from "./components/manager/Manager";
-import ProList from "./components/manager/ProList";
-import ProInfo from "./components/manager/ProInfo";
+import Index from "../../vue-pay/src/views/index/Index";
+import Register from "../../vue-pay/src/views/register/Register";
+import Login from "../../vue-pay/src/views/login/Login";
+import Manager from "../../vue-pay/src/views/manager/Manager";
+import ProList from "../../vue-pay/src/views/manager/ProList";
+import ProInfo from "../../vue-pay/src/views/manager/ProInfo";
 
 export const routes = [
   {
@@ -47,5 +47,4 @@ export const routes = [
     path: '/logout',
     redirect: '/login'
   }
-
 ]
