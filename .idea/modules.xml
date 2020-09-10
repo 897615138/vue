@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/vue.iml" filepath="$PROJECT_DIR$/.idea/vue.iml" />
-      <module fileurl="file://$PROJECT_DIR$/vue_sum_2020/.idea/vue_sum_2020.iml" filepath="$PROJECT_DIR$/vue_sum_2020/.idea/vue_sum_2020.iml" />
     </modules>
   </component>
 </project>

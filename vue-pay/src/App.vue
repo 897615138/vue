@@ -1,9 +1,6 @@
 <template>
   <div id="app">
     <Header></Header>
-    <!--    <img src="./assets/logo.png" alt="">-->
-<!--    <my-content :title="msg" :btnFn="FCfn" @newMsg="msg=$event"></my-content>-->
-    <!--    <register></register>-->
     <router-view/>
     <Bottom></Bottom>
   </div>

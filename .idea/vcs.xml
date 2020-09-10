@@ -5,6 +5,5 @@
     <mapping directory="$PROJECT_DIR$/admin" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/bootstrap-npm-starter" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/node_modules/vue-router" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/vue_sum_2020" vcs="Git" />
   </component>
 </project>

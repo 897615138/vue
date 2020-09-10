@@ -15,12 +15,7 @@ import VueRouter from "vue-router";//引入路由模块
 import Router from "vue-router";
 import router from "./router/index";
 
-import ViewUI from 'view-design';
-import 'view-design/dist/styles/iview.css';
-
-
 Vue.use(ElementUI);
-Vue.use(ViewUI);
 Vue.use(Router)
 Vue.use(VueRouter)
 
